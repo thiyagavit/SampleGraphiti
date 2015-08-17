@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypes">
+      <diagramType
+            name="SampleGraphiti_DiagramType"
+            type="SampleGraphiti_DiagramType"
+            id="SampleGraphiti_DiagramType">
+      </diagramType>
+   </extension>
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypeProviders">
+      <diagramTypeProvider
+            name="SampleGraphitiDiagram_TypeProvider"
+            class="samplegraphiti.diagram.SampleGraphitiDiagramTypeProvider"
+            id="SampleGraphitiDiagram_TypeProvider">
+         <diagramType
+               id="SampleGraphiti_DiagramType">
+         </diagramType>
+      </diagramTypeProvider>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated sample -->
+      <package
+            uri="sample"
+            class="sample.SamplePackage"
+            genModel="model/sample.genmodel"/>
+   </extension>
+   <extension
+         id="Sample Graphiti"
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="samplegraphiti.wizards.SampleGraphitiWizard"
+            id="SampleGraphiti.wizard"
+            name="Sample Graphiti">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor
+            contributorId="SampleGraphiti_DiagramType.PropertyContributor">
+         <propertyCategory
+               category="Graphiti">
+         </propertyCategory>
+      </propertyContributor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="SampleGraphiti_DiagramType.PropertyContributor">
+         <propertyTab
+               category="Graphiti"
+               id="graphiti.main.tab"
+               label="Main">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="SampleGraphiti_DiagramType.PropertyContributor">
+         <propertySection
+               class="samplegraphiti.properties.PersonPropertySection"
+               filter="samplegraphiti.properties.PersonPropertyFilter"
+               id="graphiti.main.tab.emfclass.person"
+               tab="graphiti.main.tab">
+         </propertySection>
+      </propertySections>
+   </extension>
+
+</plugin>

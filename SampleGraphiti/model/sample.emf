@@ -1,0 +1,13 @@
+@namespace(uri="sample", prefix="")
+package sample;
+
+class Person {
+  attr Double employeeId;
+  attr String name;
+}
+
+class Hierarchy {
+  ref Person[1] Manager;
+  ref Person[1] Reportee;
+}
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/hierarchy" xmlns:tns="http://www.example.org/hierarchy" elementFormDefault="qualified">
+
+    <complexType name="PersonType">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    		<element name="employeeId" type="string"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="HierarchyType">
+    	<sequence>
+    		<element name="reportee" type="tns:PersonType"></element>
+    		<element name="manager" type="tns:PersonType"></element>
+    	</sequence>
+    	
+    </complexType>
+
+    <complexType name="PersonListType">
+    	<sequence>
+    		<element name="person" type="tns:PersonType" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    
+        <complexType name="HierarchyListType">
+    	<sequence>
+    		<element name="hierarchy" type="tns:HierarchyType" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    
+
+        <complexType name="HierarchyDBType">
+        	<sequence>
+        		<element name="HierarchyList" type="tns:HierarchyListType"></element>
+        		<element name="PersonList" type="tns:PersonListType"></element>
+        	</sequence>
+        </complexType>
+</schema>

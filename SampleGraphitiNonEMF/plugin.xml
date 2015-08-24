@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypes">
+      <diagramType
+            name="SampleGraphitiNonEMF Diagram Type"
+            type="SampleGraphitiNonEMF"
+            id="SampleGraphitiNonEMF.SampleGraphitiNonEMFDiagramType">
+      </diagramType>
+   </extension>
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypeProviders">
+      <diagramTypeProvider
+            name="SampleGraphitiNonEMF Diagram Type Provider"
+            class="samplegraphitinonemf.diagram.SampleGraphitiNonEMFDiagramTypeProvider"
+            id="SampleGraphitiNonEMF.SampleGraphitiNonEMFDiagramTypeProvider">
+         <diagramType
+               id="SampleGraphitiNonEMF.SampleGraphitiNonEMFDiagramType">
+         </diagramType>
+      </diagramTypeProvider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="samplegraphitinonemf.diagram.MyDiagramEditor"
+            default="true"
+            extensions="pdml"
+            id="samplegraphitinonemf.diagram.editor.graphiti.MyDiagramEditor"
+            name="MyDiagramEditor">
+         <contentTypeBinding
+               contentTypeId="org.eclipse.graphiti.content.diagram">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="samplegraphitinonemf.wizards.SampleGraphitiWizard"
+            id="SampleGraphitiNonEMF.wizard"
+            name="SampleGraphitiNonEMF.wizard">
+      </wizard>
+   </extension>
+
+</plugin>

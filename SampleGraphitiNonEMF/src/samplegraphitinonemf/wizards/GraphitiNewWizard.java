@@ -312,7 +312,7 @@ public abstract class GraphitiNewWizard extends Wizard implements INewWizard {
      * @param modelName
      *            name of the domain model
      */
-    private void createModel(final Resource diagramResource, final String diagramName) {
+    protected void createModel(final Resource diagramResource, final String diagramName) {
         //EObject domainModel = createModel(modelName);
         //modelResource.getContents().add(domainModel);
         diagramResource.setTrackingModification(true);
@@ -321,7 +321,7 @@ public abstract class GraphitiNewWizard extends Wizard implements INewWizard {
         PictogramLink link = PictogramsFactory.eINSTANCE.createPictogramLink();
         link.setPictogramElement(diagram);
         //link.getBusinessObjects().add(domainModel);
-        configureDiagram(diagram);
+        configureDiagram(diagram, diagramName);
         diagramResource.getContents().add(diagram);
         
         try {
@@ -329,6 +329,7 @@ public abstract class GraphitiNewWizard extends Wizard implements INewWizard {
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
+        
     }
 
     /**
@@ -337,8 +338,9 @@ public abstract class GraphitiNewWizard extends Wizard implements INewWizard {
      * @param diagram
      *            the top-level element of the pictogram model
      */
-    protected void configureDiagram(final Diagram diagram) {
+    protected void configureDiagram(final Diagram diagram, String diagramName) {
         // the default implementation does nothing
+    	
     }
 
 }

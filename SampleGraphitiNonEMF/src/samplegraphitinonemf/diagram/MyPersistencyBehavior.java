@@ -20,6 +20,7 @@ import java.io.StringWriter;
 import javax.xml.bind.JAXBContext;
 
 import model.generated.HierarchyDBType;
+import model.service.HierarchyService;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -29,6 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
+import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.editor.DefaultPersistencyBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.jface.util.SafeRunnable;
@@ -51,8 +53,9 @@ public class MyPersistencyBehavior extends DefaultPersistencyBehavior {
     if (momlFile.exists()) {
       try {
     	  JAXBContext jaxbContext = JAXBContext.newInstance(HierarchyDBType.class);
-    	  HierarchyDBType hierarchydbType = (HierarchyDBType) jaxbContext.createUnmarshaller().unmarshal(momlFile.getLocationURI().toURL());
-    	  HierarchyRepository.registerDiagramAndHierarchyDB(diagram, hierarchydbType);        
+    	  HierarchyDBType hierarchyDB = (HierarchyDBType) jaxbContext.createUnmarshaller().unmarshal(momlFile.getLocationURI().toURL());
+    	  String dbKey = Graphiti.getPeService().getPropertyValue(diagram, SampleGraphitiNonEMFDiagramTypeProvider.DIAGRAM_KEY_PROPERTY);
+    	  HierarchyService.getInstance().registerHierarchyDB(dbKey, hierarchyDB);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -64,7 +67,8 @@ public class MyPersistencyBehavior extends DefaultPersistencyBehavior {
   public void saveDiagram(IProgressMonitor monitor) {
     super.saveDiagram(monitor);
     final Diagram diagram = getDiagramBehavior().getDiagramTypeProvider().getDiagram();
-    saveToMOML(HierarchyRepository.getHierarchyDBForDiagram(diagram), monitor);
+    String dbKey = Graphiti.getPeService().getPropertyValue(diagram, SampleGraphitiNonEMFDiagramTypeProvider.DIAGRAM_KEY_PROPERTY);
+    saveToMOML(HierarchyService.getInstance().getOrCreateNewHierarchyDB(dbKey), monitor);
   }
 
   protected void saveToMOML(final HierarchyDBType f, final IProgressMonitor monitor) {

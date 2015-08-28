@@ -14,21 +14,51 @@
  */
 package samplegraphitinonemf.diagram;
 
+import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.graphiti.features.impl.IIndependenceSolver;
 import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditor;
+import org.eclipse.ui.part.IPageSite;
 
 public class MyDiagramEditor extends DiagramEditor {
 
-  public final static String EDITOR_ID = "samplegraphitinonemf.diagram.editor.graphiti.MyDiagramEditor";
-  
-  @Override
-  protected DiagramBehavior createDiagramBehavior() {
-    return new MyDiagramBehavior(this);
-  }
+	public final static String EDITOR_ID = "samplegraphitinonemf.diagram.editor.graphiti.MyDiagramEditor";
 
-  public IIndependenceSolver getIndependenceSolver() {
-    return ((SampleGraphitiNonEMFDiagramTypeProvider) getDiagramTypeProvider()).getIndependenceSolver();
-  }
+	public MyDiagramEditor() {
+		super();
+
+	}
+
+	@Override
+	public DefaultEditDomain getEditDomain() {
+		DefaultEditDomain editDomain = super.getEditDomain();
+
+		if (editDomain == null) {
+			setEditDomain(new DefaultEditDomain(this));
+		}
+		return super.getEditDomain();
+	}
+
+	@Override
+	protected DiagramBehavior createDiagramBehavior() {
+		return new MyDiagramBehavior(this);
+	}
+
+	@Override
+	public String getContributorId() {
+		return "SampleGraphitiNonEMFDiagramType.PropertyContributor";	
+	}
+
+	public IIndependenceSolver getIndependenceSolver() {
+		return ((SampleGraphitiNonEMFDiagramTypeProvider) getDiagramTypeProvider())
+				.getIndependenceSolver();
+	}
+
+	protected CustomPalettePage createPalettePage() {
+		return new CustomPalettePage(getPaletteViewerProvider()) {
+			public void init(IPageSite pageSite) {
+			}
+		};
+	}
 
 }

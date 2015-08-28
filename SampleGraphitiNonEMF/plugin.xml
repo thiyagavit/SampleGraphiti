@@ -5,19 +5,19 @@
    <extension
          point="org.eclipse.graphiti.ui.diagramTypes">
       <diagramType
-            name="SampleGraphitiNonEMF Diagram Type"
-            type="SampleGraphitiNonEMF"
-            id="SampleGraphitiNonEMF.SampleGraphitiNonEMFDiagramType">
+            name="SampleGraphitiNonEMFDiagramType"
+            type="SampleGraphitiNonEMFDiagramType"
+            id="SampleGraphitiNonEMFDiagramType">
       </diagramType>
    </extension>
    <extension
          point="org.eclipse.graphiti.ui.diagramTypeProviders">
       <diagramTypeProvider
-            name="SampleGraphitiNonEMF Diagram Type Provider"
+            name="SampleGraphitiNonEMFDiagram_TypeProvider"
             class="samplegraphitinonemf.diagram.SampleGraphitiNonEMFDiagramTypeProvider"
-            id="SampleGraphitiNonEMF.SampleGraphitiNonEMFDiagramTypeProvider">
+            id="SampleGraphitiNonEMFDiagram_TypeProvider">
          <diagramType
-               id="SampleGraphitiNonEMF.SampleGraphitiNonEMFDiagramType">
+               id="SampleGraphitiNonEMFDiagramType">
          </diagramType>
       </diagramTypeProvider>
    </extension>
@@ -41,6 +41,38 @@
             id="SampleGraphitiNonEMF.wizard"
             name="SampleGraphitiNonEMF.wizard">
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor
+            contributorId="SampleGraphitiNonEMFDiagramType.PropertyContributor">
+         <propertyCategory
+               category="Graphiti">
+         </propertyCategory>
+      </propertyContributor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="SampleGraphitiNonEMFDiagramType.PropertyContributor">
+         <propertyTab
+               category="Graphiti"
+               id="graphiti.main.tab"
+               label="Main">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="SampleGraphitiNonEMFDiagramType.PropertyContributor">
+         <propertySection
+               class="samplegraphitinonemf.properties.PersonPropertySection"
+               filter="samplegraphitinonemf.properties.PersonPropertyFilter"
+               id="graphiti.main.tab.nonemfclass.person"
+               tab="graphiti.main.tab">
+         </propertySection>
+      </propertySections>
    </extension>
 
 </plugin>

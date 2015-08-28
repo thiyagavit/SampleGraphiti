@@ -1,9 +1,11 @@
 package samplegraphitinonemf.diagram;
 
 import model.generated.HierarchyDBType;
+import model.service.HierarchyService;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
+import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.ui.editor.DefaultPersistencyBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditorInput;
@@ -11,7 +13,6 @@ import org.eclipse.graphiti.ui.editor.IDiagramContainerUI;
 import org.eclipse.graphiti.ui.editor.IDiagramEditorInput;
 
 public class MyDiagramBehavior extends DiagramBehavior {
-  private HierarchyDBType hierarchyDB;
   //private FlowChangeListener flowChangeListener;
 
   public MyDiagramBehavior(IDiagramContainerUI diagramContainer) {
@@ -40,20 +41,14 @@ public class MyDiagramBehavior extends DiagramBehavior {
     }*/
   }
 
-  /**
+/*  *//**
    * @return the flow that is open in this editor instance; Can be null if no Flow is opened yet somehow.
-   */
+   *//*
   public HierarchyDBType getHierarchyDB() {
-    if (hierarchyDB == null) {
-      try {
-        Diagram diagram = getDiagramTypeProvider().getDiagram();
-        hierarchyDB = HierarchyRepository.getHierarchyDBForDiagram(diagram);
-      } catch (NullPointerException e) {
-        // ignore, means somehow the flow is not linked yet
-      }
-    }
-    return hierarchyDB;
-  }
+      Diagram diagram = getDiagramTypeProvider().getDiagram();
+      String diagramKey = Graphiti.getPeService().getPropertyValue(diagram, SampleGraphitiNonEMFDiagramTypeProvider.DIAGRAM_KEY_PROPERTY);
+	  return HierarchyService.getInstance().getOrCreateNewHierarchyDB(diagramKey);
+  }*/
   
   public IFile getDiagramFile() {
     IDiagramEditorInput input = getInput();

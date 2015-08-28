@@ -4,21 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.generated.PersonType;
+import model.service.HierarchyService;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.graphiti.features.impl.IIndependenceSolver;
 
 public class MyIndepenceResolver implements IIndependenceSolver {
 
 	private static Map<String, Object> objectMap = new HashMap<String, Object>();
 	
-	private Object topLevel;
+	private String diagramKey;
 	
-	public Object getTopLevel() {
-		return topLevel;
+	public String getDiagramKey() {
+		return diagramKey;
 	}
 
-	public void setTopLevel(Object topLevel) {
-		this.topLevel = topLevel;
+	public void setDiagramKey(String diagramKey) {
+		this.diagramKey = diagramKey;
 	}
 
 	@Override
@@ -29,11 +31,15 @@ public class MyIndepenceResolver implements IIndependenceSolver {
 			if(bo instanceof PersonType) {
 				//For now person will have unique name assumed :)
 				result = ((PersonType) bo).getName();
+				
+				Assert.isNotNull(this.diagramKey);
+				HierarchyService.getInstance().getPerson(getDiagramKey(), result);
+				return result;
 			} 
 			
 			if(result == null) {
 				result = String.valueOf(bo.hashCode());	
-			}			
+			}
 			
 			if(!objectMap.containsKey(result)) {
 				objectMap.put(result, bo);
@@ -44,7 +50,13 @@ public class MyIndepenceResolver implements IIndependenceSolver {
 
 	@Override
 	public Object getBusinessObjectForKey(String key) {
-		return objectMap.get(key);
+		Assert.isNotNull(this.diagramKey);
+		Object obj = HierarchyService.getInstance().getPerson(getDiagramKey(), key);
+		
+		if(obj == null) {
+			obj = objectMap.get(key);
+		}
+		return obj;
 	}
 
 	

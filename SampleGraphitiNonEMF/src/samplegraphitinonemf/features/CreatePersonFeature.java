@@ -1,17 +1,16 @@
 package samplegraphitinonemf.features;
 
-import model.generated.HierarchyDBType;
-import model.generated.ObjectFactory;
-import model.generated.PersonListType;
 import model.generated.PersonType;
+import model.service.HierarchyService;
 
 import org.eclipse.graphiti.examples.common.ExampleUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
+import org.eclipse.graphiti.services.Graphiti;
 
-import samplegraphitinonemf.diagram.HierarchyRepository;
+import samplegraphitinonemf.diagram.SampleGraphitiNonEMFDiagramTypeProvider;
 
 public class CreatePersonFeature extends AbstractCreateFeature {
 
@@ -21,8 +20,11 @@ public class CreatePersonFeature extends AbstractCreateFeature {
 
 	private static final String USER_QUESTION = "Enter name of new Person";
 
+	private String diagramKey;
+	
 	public CreatePersonFeature(IFeatureProvider fp) {
 		super(fp, FEATURE_NAME, "create a new person");
+		
 	}
 
 	@Override
@@ -38,60 +40,18 @@ public class CreatePersonFeature extends AbstractCreateFeature {
 		if (personName == null || personName.trim().length() == 0) {
 			return EMPTY;
 		}
-
-		// create EClass
-		// EClass newClass = EcoreFactory.eINSTANCE.createEClass();
-		PersonType person = new ObjectFactory().createPersonType();
-		/*
-		 * // Add model element to resource. // We add the model element to the
-		 * resource of the diagram for // simplicity's sake. Normally, a
-		 * customer would use its own // model persistence layer for storing the
-		 * business model separately.
-		 * getDiagram().eResource().getContents().add(newClass);
-		 */
-		person.setName(personName);
 		
-		HierarchyDBType hierachydb = HierarchyRepository.getHierarchyDBForDiagram(getDiagram());
-		PersonListType pListType = hierachydb.getPersonList();
-		
-		if(pListType == null) {
-			pListType = new PersonListType();
-			hierachydb.setPersonList(pListType);
+		if(diagramKey == null) {
+			diagramKey = Graphiti.getPeService().getPropertyValue(getDiagram(), SampleGraphitiNonEMFDiagramTypeProvider.DIAGRAM_KEY_PROPERTY);	
 		}
-		pListType.getPerson().add(person);
-
-/*		try {
-			saveToModelFile(person, getDiagram());
-		} catch (CoreException | IOException e) {
-			e.printStackTrace();
-		}*/
-
+		
+		PersonType person = HierarchyService.getInstance().createPerson(diagramKey, personName);		
+		
 		// do the add
 		addGraphicalRepresentation(context, person);
 
 		// return newly created business object(s)
 		return new Object[] { person };
 	}
-
-/*	public static void saveToModelFile(final Object obj, final Diagram d)
-			throws CoreException, IOException {
-		URI uri = d.eResource().getURI();
-		uri = uri.trimFragment();
-		uri = uri.trimFileExtension();
-		uri = uri.appendFileExtension("model");
-		ResourceSet rSet = d.eResource().getResourceSet();
-		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace()
-				.getRoot();
-		IResource file = workspaceRoot.findMember(uri.toPlatformString(true));
-
-		if (file == null || !file.exists()) {
-			Resource createResource = rSet.createResource(uri);
-			createResource.save(new HashMap<String, Object>());
-			createResource.setTrackingModification(true);
-		}
-		final Resource resource = rSet.getResource(uri, true);
-		resource.getContents().add(obj);
-
-	}*/
 
 }
